@@ -13,7 +13,6 @@ namespace BlackJackConsoleAppWithTyler
 
         static void Main(string[] args)
         {
-            //Comment!
             GetLoginChoice();
             players.Add(Tyler.GetTyler());
 

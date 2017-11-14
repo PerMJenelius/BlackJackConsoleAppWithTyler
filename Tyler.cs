@@ -20,11 +20,6 @@ namespace ConsoleAppBlackJack
             return tylerList[0];
         }
 
-        public static List<Hand> GetTylersHands()
-        {
-            return tylersHands;
-        }
-
         public static void AskForAction(List<Hand> inputHands)
         {
             tylersHands[0].DealerHand = inputHands[0].DealerHand;
@@ -306,8 +301,6 @@ namespace ConsoleAppBlackJack
 
         internal static void PrintTyler()
         {
-            
-            var tylersHands = Tyler.GetTylersHands();
             Console.WriteLine("Tyler has:");
 
             for (int i = 0; i < tylersHands.Count; i++)
