@@ -1,0 +1,7 @@
+C:\Projekt\XML\BlackJackConsoleAppWithTyler\BlackJackConsoleAppWithTyler\bin\Debug\BlackJackConsoleAppWithTyler.exe.config
+C:\Projekt\XML\BlackJackConsoleAppWithTyler\BlackJackConsoleAppWithTyler\bin\Debug\BlackJackConsoleAppWithTyler.exe
+C:\Projekt\XML\BlackJackConsoleAppWithTyler\BlackJackConsoleAppWithTyler\bin\Debug\BlackJackConsoleAppWithTyler.pdb
+C:\Projekt\XML\BlackJackConsoleAppWithTyler\BlackJackConsoleAppWithTyler\obj\Debug\BlackJackConsoleAppWithTyler.csprojResolveAssemblyReference.cache
+C:\Projekt\XML\BlackJackConsoleAppWithTyler\BlackJackConsoleAppWithTyler\obj\Debug\BlackJackConsoleAppWithTyler.csproj.CoreCompileInputs.cache
+C:\Projekt\XML\BlackJackConsoleAppWithTyler\BlackJackConsoleAppWithTyler\obj\Debug\BlackJackConsoleAppWithTyler.exe
+C:\Projekt\XML\BlackJackConsoleAppWithTyler\BlackJackConsoleAppWithTyler\obj\Debug\BlackJackConsoleAppWithTyler.pdb
