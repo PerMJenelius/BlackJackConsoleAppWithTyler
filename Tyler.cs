@@ -39,7 +39,7 @@ namespace ConsoleAppBlackJack
                 bool soft = tylersHands[i].PlayerHandSoftValue > tylersHands[i].PlayerHandValue;
 
                 //CountCards
-                if (count >= 1)
+                if (dealerCard == 11 && count >= 1)
                 {
                     Insurance();
                 }
@@ -47,297 +47,380 @@ namespace ConsoleAppBlackJack
                 if (pair)
                 {
                     int tylerPair = tylersHands[i].PlayerHand[0].Value;
-
-                    if (tylerPair == 2)
-                    {
-                        if (dealerCard <= 7)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard >= 8)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerPair == 3)
-                    {
-                        if (dealerCard > 1 && dealerCard <= 8)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard >= 9)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerPair == 4)
-                    {
-                        if (dealerCard <= 3)
-                        {
-                            Hit();
-                        }
-                        else if (dealerCard >= 4 && dealerCard <= 6)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard >= 7)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerPair == 5)
-                    {
-                        if (dealerCard <= 9)
-                        {
-                            DoubleOrHit();
-                        }
-                        else if (dealerCard >= 10)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerPair == 6)
-                    {
-                        if (dealerCard <= 7)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard >= 8)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerPair == 7)
-                    {
-                        if (dealerCard <= 8)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard == 9)
-                        {
-                            Hit();
-                        }
-                        else if (dealerCard == 10)
-                        {
-                            Stand();
-                        }
-                        else if (dealerCard == 11)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerPair == 8)
-                    {
-                        if (dealerCard <= 9)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard >= 10)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerPair == 9)
-                    {
-                        if (dealerCard <= 6)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard == 7)
-                        {
-                            Stand();
-                        }
-                        else if (dealerCard > 7 && dealerCard <= 9)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard > 9)
-                        {
-
-                        }
-                    }
-                    else if (tylerPair == 10)
-                    {
-                        Stand();
-                    }
-                    else if (tylerPair == 1)
-                    {
-                        if (dealerCard <= 10)
-                        {
-                            Split();
-                        }
-                        else if (dealerCard == 11)
-                        {
-                            Hit();
-                        }
-                    }
+                    Pair(tylerPair, dealerCard, count);
+                    break;
                 }
                 else if (soft)
                 {
                     int tylerHand = tylersHands[i].PlayerHandSoftValue;
-
-                    if (tylerHand >= 13 && tylerHand <= 16)
-                    {
-                        if (dealerCard <= 3)
-                        {
-                            Hit();
-                        }
-                        else if (dealerCard >= 4 && dealerCard <= 6)
-                        {
-                            DoubleOrHit();
-                        }
-                        else if (dealerCard >= 7)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerHand == 17)
-                    {
-                        if (dealerCard <= 6)
-                        {
-                            DoubleOrHit();
-                        }
-                        else if (dealerCard >= 7)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerHand == 18)
-                    {
-                        if (dealerCard == 2)
-                        {
-                            Stand();
-                        }
-                        else if (dealerCard >= 3 && dealerCard <= 6)
-                        {
-                            DoubleOrStand();
-                        }
-                    }
-                    else if (tylerHand == 19)
-                    {
-                        if (dealerCard <= 5)
-                        {
-                            Stand();
-                        }
-                        else if (dealerCard == 6)
-                        {
-                            DoubleOrStand();
-                        }
-                        else if (dealerCard >= 7)
-                        {
-                            Stand();
-                        }
-                    }
-                    else if (tylerHand >= 20)
-                    {
-                        Stand();
-                    }
+                    Soft(tylerHand, dealerCard, count);
+                    break;
                 }
                 else
                 {
                     int tylerHand = tylersHands[i].PlayerHandValue;
+                    Solid(tylerHand, dealerCard, count);
+                    break;
+                }
+            }
+        }
 
-                    if (tylerHand <= 7)
-                    {
-                        Hit();
-                    }
-                    else if (tylerHand == 8)
-                    {
-                        if (dealerCard <= 4)
-                        {
-                            Hit();
-                        }
-                        else if (dealerCard >= 5 && dealerCard <= 6)
-                        {
-                            DoubleOrHit();
-                        }
-                        else if (dealerCard >= 7)
-                        {
+        private static void Solid(int tylerHand, int dealerCard, int count)
+        {
+            if (tylerHand <= 7)
+            {
+                Hit();
+            }
+            else if (tylerHand == 8)
+            {
+                if (dealerCard <= 4)
+                {
+                    Hit();
+                }
+                else if (dealerCard >= 5 && dealerCard <= 6)
+                {
+                    DoubleOrHit();
+                }
+                else if (dealerCard >= 7)
+                {
 
-                        }
-                    }
-                    else if (tylerHand == 9)
-                    {
-                        if (dealerCard <= 6)
-                        {
-                            DoubleOrHit();
-                        }
-                        else if (dealerCard >= 7)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerHand >= 10 && tylerHand <= 11)
-                    {
-                        if (dealerCard <= 9)
-                        {
-                            DoubleOrHit();
-                        }
-                        else if (dealerCard >= 10)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerHand == 12)
-                    {
-                        //CountCards
-                        if (dealerCard == 2 && count >= 5)
-                        {
-                            Stand();
-                        }
-                        //CountCards
-                        else if (dealerCard == 3 && count >= 1)
-                        {
-                            Stand();
-                        }
-                        if (dealerCard >= 2 && dealerCard <= 3)
-                        {
-                            Hit();
-                        }
-                        else if (dealerCard >= 4 && dealerCard <= 6)
-                        {
-                            Stand();
-                        }
-                        else if (dealerCard >= 7)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerHand >= 13 && tylerHand <= 16)
-                    {
-                        //CountCards
-                        if (tylerHand == 15 && dealerCard >= 10 && count >= 5)
-                        {
-                            Stand();
-                        }
-                        //CountCards
-                        else if (tylerHand == 16 && dealerCard == 10 && count >= 1)
-                        {
-                            Stand();
-                        }
-                        //CountCards
-                        else if (tylerHand == 16 && dealerCard == 9 && count >= 5)
-                        {
-                            Stand();
-                        }
-                        //CountCards
-                        else if (tylerHand == 16 && dealerCard == 11 && count >= 5)
-                        {
-                            Stand();
-                        }
-                        else if (dealerCard <= 6)
-                        {
-                            Stand();
-                        }
-                        else if (dealerCard >= 7)
-                        {
-                            Hit();
-                        }
-                    }
-                    else if (tylerHand >= 17)
-                    {
-                        Stand();
-                    }
+                }
+            }
+            else if (tylerHand == 9)
+            {
+                if (dealerCard <= 6)
+                {
+                    DoubleOrHit();
+                }
+                else if (dealerCard >= 7)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerHand >= 10 && tylerHand <= 11)
+            {
+                //CountCards
+                if (tylerHand == 10 && dealerCard >= 10 && count >= 5)
+                {
+                    Stand();
+                }
+                else if (dealerCard <= 9)
+                {
+                    DoubleOrHit();
+                }
+                else if (dealerCard >= 10)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerHand == 12)
+            {
+                //CountCards
+                if (dealerCard == 5 && count <= -1)
+                {
+                    Hit();
+                }
+                //CountCards
+                else if (dealerCard == 6 && count <= -5)
+                {
+                    Hit();
+                }
+                //CountCards
+                else if (dealerCard == 2 && count >= 5)
+                {
+                    Stand();
+                }
+                //CountCards
+                else if (dealerCard == 3 && count >= 1)
+                {
+                    Stand();
+                }
+                else if (dealerCard >= 2 && dealerCard <= 3)
+                {
+                    Hit();
+                }
+                else if (dealerCard >= 4 && dealerCard <= 6)
+                {
+                    Stand();
+                }
+                else if (dealerCard >= 7)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerHand >= 13 && tylerHand <= 16)
+            {
+                //CountCards
+                if (tylerHand == 13 && dealerCard <= 3 && count <= -1)
+                {
+                    Hit();
+                }
+                //CountCards
+                else if (tylerHand == 13 && dealerCard >= 4 && dealerCard <= 5 && count <= -5)
+                {
+                    Hit();
+                }
+                //CountCards
+                else if (tylerHand == 14 && dealerCard <= 3 && count <= -5)
+                {
+                    Hit();
+                }
+                //CountCards
+                else if (tylerHand == 14 && dealerCard == 11 && count >= 10)
+                {
+                    Stand();
+                }
+                //CountCards
+                else if (tylerHand == 15 && dealerCard >= 10 && count >= 5)
+                {
+                    Stand();
+                }
+                //CountCards
+                else if (tylerHand == 15 && dealerCard == 2 && count <= -5)
+                {
+                    Hit();
+                }
+                //CountCards
+                else if (tylerHand == 15 && dealerCard == 9 && count >= 10)
+                {
+                    Stand();
+                }
+                //CountCards
+                else if (tylerHand == 16 & dealerCard == 8 && count >= 10)
+                {
+                    Stand();
+                }
+                //CountCards
+                else if (tylerHand == 16 && dealerCard == 10 && count >= 1)
+                {
+                    Stand();
+                }
+                //CountCards
+                else if (tylerHand == 16 && dealerCard == 9 && count >= 5)
+                {
+                    Stand();
+                }
+                //CountCards
+                else if (tylerHand == 16 && dealerCard == 11 && count >= 5)
+                {
+                    Stand();
+                }
+                else if (dealerCard <= 6)
+                {
+                    Stand();
+                }
+                else if (dealerCard >= 7)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerHand >= 17)
+            {
+                //CountCards
+                if (tylerHand == 17 && dealerCard == 11 && count <= -5)
+                {
+                    Hit();
+                }
+                else
+                {
+                    Stand();
+                }
+            }
+        }
+
+        private static void Soft(int tylerHand, int dealerCard, int count)
+        {
+            if (tylerHand >= 13 && tylerHand <= 16)
+            {
+                if (dealerCard <= 3)
+                {
+                    Hit();
+                }
+                else if (dealerCard >= 4 && dealerCard <= 6)
+                {
+                    DoubleOrHit();
+                }
+                else if (dealerCard >= 7)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerHand == 17)
+            {
+                if (dealerCard <= 6)
+                {
+                    DoubleOrHit();
+                }
+                else if (dealerCard >= 7)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerHand == 18)
+            {
+                if (dealerCard == 2)
+                {
+                    Stand();
+                }
+                else if (dealerCard >= 3 && dealerCard <= 6)
+                {
+                    DoubleOrStand();
+                }
+            }
+            else if (tylerHand == 19)
+            {
+                if (dealerCard <= 5)
+                {
+                    Stand();
+                }
+                else if (dealerCard == 6)
+                {
+                    DoubleOrStand();
+                }
+                else if (dealerCard >= 7)
+                {
+                    Stand();
+                }
+            }
+            else if (tylerHand >= 20)
+            {
+                Stand();
+            }
+        }
+
+        private static void Pair(int tylerPair, int dealerCard, int count)
+        {
+            //CountCards
+            if (dealerCard >= 5 && dealerCard <= 6 && count >= 5)
+            {
+                Stand();
+            }
+            //CountCards
+            else if (dealerCard >= 3 && dealerCard <= 4 && count >= 10)
+            {
+                Stand();
+            }
+            else if (tylerPair == 2)
+            {
+                if (dealerCard <= 7)
+                {
+                    Split();
+                }
+                else if (dealerCard >= 8)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerPair == 3)
+            {
+                if (dealerCard > 1 && dealerCard <= 8)
+                {
+                    Split();
+                }
+                else if (dealerCard >= 9)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerPair == 4)
+            {
+                if (dealerCard <= 3)
+                {
+                    Hit();
+                }
+                else if (dealerCard >= 4 && dealerCard <= 6)
+                {
+                    Split();
+                }
+                else if (dealerCard >= 7)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerPair == 5)
+            {
+                if (dealerCard <= 9)
+                {
+                    DoubleOrHit();
+                }
+                else if (dealerCard >= 10)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerPair == 6)
+            {
+                if (dealerCard <= 7)
+                {
+                    Split();
+                }
+                else if (dealerCard >= 8)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerPair == 7)
+            {
+                if (dealerCard <= 8)
+                {
+                    Split();
+                }
+                else if (dealerCard == 9)
+                {
+                    Hit();
+                }
+                else if (dealerCard == 10)
+                {
+                    Stand();
+                }
+                else if (dealerCard == 11)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerPair == 8)
+            {
+                if (dealerCard <= 9)
+                {
+                    Split();
+                }
+                else if (dealerCard >= 10)
+                {
+                    Hit();
+                }
+            }
+            else if (tylerPair == 9)
+            {
+                if (dealerCard <= 6)
+                {
+                    Split();
+                }
+                else if (dealerCard == 7)
+                {
+                    Stand();
+                }
+                else if (dealerCard > 7 && dealerCard <= 9)
+                {
+                    Split();
+                }
+                else if (dealerCard > 9)
+                {
+
+                }
+            }
+            else if (tylerPair == 10)
+            {
+                Stand();
+            }
+            else if (tylerPair == 1)
+            {
+                if (dealerCard <= 10)
+                {
+                    Split();
+                }
+                else if (dealerCard == 11)
+                {
+                    Hit();
                 }
             }
         }
