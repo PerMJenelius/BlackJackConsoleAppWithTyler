@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace BlackJackConsoleAppWithTyler
 {
-
     class Program
     {
         static List<Player> players = new List<Player>();
@@ -23,7 +22,6 @@ namespace BlackJackConsoleAppWithTyler
                 hands[0] = Game.DealStartingHand(hands[0]);
                 Tyler.AskForBet(hands[0]);
                 AskForAction();
-                Tyler.AskForAction(hands);
             } while (players[0].Bankroll >= 5);
 
             Print.Quit();
@@ -201,6 +199,7 @@ namespace BlackJackConsoleAppWithTyler
                 }
                 if (active && Game.CheckForStand(hands))
                 {
+                    //Tyler.AskForAction(hands);
                     hands = Game.DealerRound(hands, players[0]);
                     EndGame();
                 }
@@ -248,4 +247,3 @@ namespace BlackJackConsoleAppWithTyler
         }
     }
 }
-

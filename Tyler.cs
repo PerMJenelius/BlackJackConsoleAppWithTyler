@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleAppBlackJack
 {
@@ -25,12 +22,18 @@ namespace ConsoleAppBlackJack
             tylersHands[0].DealerHand = inputHands[0].DealerHand;
             Game.EvaluateHands(tylersHands);
 
-            List<Hand> allHands = inputHands;
+            List<Hand> allHands = new List<Hand>();
+            foreach (var hand in inputHands)
+            {
+                allHands.Add(hand);
+            }
             foreach (var hand in tylersHands)
             {
                 allHands.Add(hand);
             }
             int count = CountCards(allHands);
+
+            Console.WriteLine(count);
 
             for (int i = 0; i < tylersHands.Count; i++)
             {
@@ -41,7 +44,7 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 if (dealerCard == 11 && count >= 1)
                 {
-                    Insurance();
+                    tylersHands[i] = Game.Insurance(tylersHands[i]);
                 }
 
                 if (pair)
@@ -83,7 +86,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-
+                    Hit();
                 }
             }
             else if (tylerHand == 9)
@@ -116,17 +119,7 @@ namespace ConsoleAppBlackJack
             else if (tylerHand == 12)
             {
                 //CountCards
-                if (dealerCard == 5 && count <= -1)
-                {
-                    Hit();
-                }
-                //CountCards
-                else if (dealerCard == 6 && count <= -5)
-                {
-                    Hit();
-                }
-                //CountCards
-                else if (dealerCard == 2 && count >= 5)
+                if (dealerCard == 2 && count >= 5)
                 {
                     Stand();
                 }
@@ -134,6 +127,16 @@ namespace ConsoleAppBlackJack
                 else if (dealerCard == 3 && count >= 1)
                 {
                     Stand();
+                }
+                //CountCards
+                else if (dealerCard == 5 && count <= -1)
+                {
+                    Hit();
+                }
+                //CountCards
+                else if (dealerCard == 6 && count <= -5)
+                {
+                    Hit();
                 }
                 else if (dealerCard >= 2 && dealerCard <= 3)
                 {
@@ -171,11 +174,6 @@ namespace ConsoleAppBlackJack
                     Stand();
                 }
                 //CountCards
-                else if (tylerHand == 15 && dealerCard >= 10 && count >= 5)
-                {
-                    Stand();
-                }
-                //CountCards
                 else if (tylerHand == 15 && dealerCard == 2 && count <= -5)
                 {
                     Hit();
@@ -186,17 +184,22 @@ namespace ConsoleAppBlackJack
                     Stand();
                 }
                 //CountCards
+                else if (tylerHand == 15 && dealerCard >= 10 && count >= 5)
+                {
+                    Stand();
+                }
+                //CountCards
                 else if (tylerHand == 16 & dealerCard == 8 && count >= 10)
                 {
                     Stand();
                 }
                 //CountCards
-                else if (tylerHand == 16 && dealerCard == 10 && count >= 1)
+                else if (tylerHand == 16 && dealerCard == 9 && count >= 5)
                 {
                     Stand();
                 }
                 //CountCards
-                else if (tylerHand == 16 && dealerCard == 9 && count >= 5)
+                else if (tylerHand == 16 && dealerCard == 10 && count >= 1)
                 {
                     Stand();
                 }
@@ -291,12 +294,12 @@ namespace ConsoleAppBlackJack
         private static void Pair(int tylerPair, int dealerCard, int count)
         {
             //CountCards
-            if (dealerCard >= 5 && dealerCard <= 6 && count >= 5)
+            if (dealerCard >= 3 && dealerCard <= 4 && count >= 10)
             {
                 Stand();
             }
             //CountCards
-            else if (dealerCard >= 3 && dealerCard <= 4 && count >= 10)
+            else if (dealerCard >= 5 && dealerCard <= 6 && count >= 5)
             {
                 Stand();
             }
@@ -423,11 +426,6 @@ namespace ConsoleAppBlackJack
                     Hit();
                 }
             }
-        }
-
-        private static void Insurance()
-        {
-            //Check for prerequisites;
         }
 
         internal static int CountCards(List<Hand> inputHands)
