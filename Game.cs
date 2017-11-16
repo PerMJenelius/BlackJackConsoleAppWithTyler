@@ -200,20 +200,27 @@ namespace ConsoleAppBlackJack
 
         public static List<Hand> DealerRound(List<Hand> hands, Player player)
         {
-            do
+            var tylerHands = Tyler.GetTylersHands();
+
+            if (!CheckForLose(tylerHands))
             {
-                var newHand = DealCard(hands[0].DealerHand, 1);
-
-                for (int i = 0; i < hands.Count; i++)
+                do
                 {
-                    hands[i].DealerHand = newHand;
-                }
+                    var newHand = DealCard(hands[0].DealerHand, 1);
 
-                hands = EvaluateHands(hands);
-                Print.Info(hands, player);
-                Print.ContinuePrompt();
+                    for (int i = 0; i < hands.Count; i++)
+                    {
+                        hands[i].DealerHand = newHand;
+                    }
 
-            } while (DealOneMore(hands));
+                    hands = EvaluateHands(hands);
+                    Print.Info(hands, player);
+                    Print.ContinuePrompt();
+
+                } while (DealOneMore(hands));
+
+                Tyler.SetDealerHand(hands[0]);
+            }
 
             return hands;
         }
@@ -235,15 +242,7 @@ namespace ConsoleAppBlackJack
             bool playerBlackjack = inputHand.PlayerHand.Count == 2 && playerHand == 21 && !inputHand.Split;
             bool dealerBlackjack = inputHand.DealerHand.Count == 2 && dealerHand == 21;
 
-            if (playerHand > 21)
-            {
-                output = 0;
-            }
-            else if (dealerHand > 21)
-            {
-                output = 2;
-            }
-            else if (dealerBlackjack && !playerBlackjack && inputHand.Insurance == 0)
+            if (dealerBlackjack && !playerBlackjack && inputHand.Insurance == 0)
             {
                 output = 0;
             }
@@ -254,6 +253,14 @@ namespace ConsoleAppBlackJack
             else if (playerBlackjack && !dealerBlackjack && inputHand.Insurance == 0)
             {
                 output = 2.5;
+            }
+            else if (playerHand > 21)
+            {
+                output = 0;
+            }
+            else if (dealerHand > 21)
+            {
+                output = 2;
             }
             else if (playerBlackjack && inputHand.Insurance > 0)
             {

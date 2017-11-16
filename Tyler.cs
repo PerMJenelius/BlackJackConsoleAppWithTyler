@@ -18,6 +18,11 @@ namespace ConsoleAppBlackJack
             return tylerList[0];
         }
 
+        public static List<Hand> GetTylersHands()
+        {
+            return tylersHands;
+        }
+
         public static void AskForAction(List<Hand> inputHands)
         {
             tylersHands[0].DealerHand = inputHands[0].DealerHand;
@@ -231,6 +236,14 @@ namespace ConsoleAppBlackJack
                 {
                     inputHand.Stand = true;
                 }
+            }
+        }
+
+        internal static void SetDealerHand(Hand hand)
+        {
+            foreach (var handy in tylersHands)
+            {
+                handy.DealerHand = hand.DealerHand;
             }
         }
 
@@ -552,22 +565,19 @@ namespace ConsoleAppBlackJack
         public static void AskForBet(Hand inputHand)
         {
             tylersHands.Clear();
-
             Hand tylersHand = new Hand();
             tylersHand.PlayerHand = Game.DealCard(tylersHand.PlayerHand, 2);
             tylersHand.DealerHand = inputHand.DealerHand;
             tylersHand.Bet = 5;
+            tyler.Bankroll -= tylersHand.Bet;
             tylersHands.Add(tylersHand);
             Game.EvaluateHands(tylersHands);
         }
 
-        public static string Says(List<Hand> inputHands)
+        internal static void EndGame(List<Hand> inputHands)
         {
-            return string.Empty;
-        }
+            Game.EvaluateHands(tylersHands);
 
-        internal static void Result()
-        {
             for (int i = 0; i < tylersHands.Count; i++)
             {
                 double result = Game.CompareHands(tylersHands[i]);
@@ -600,6 +610,8 @@ namespace ConsoleAppBlackJack
                         }
                 }
             }
+
+            Says(inputHands);
         }
 
         private static void SaveTyler()
@@ -610,6 +622,32 @@ namespace ConsoleAppBlackJack
             };
             string xmlData = XMLConvert.ObjectToXml(tylerList);
             File.WriteAllText(dataPath, xmlData);
+        }
+
+        public static void Says(List<Hand> inputHands)
+        {
+            Console.WriteLine();
+
+            for (int i = 0; i < inputHands.Count; i++)
+            {
+                Console.Write("Tyler says: ");
+
+                var result = Game.CompareHands(inputHands[i]);
+
+                if (result >= 2)
+                {
+                    Console.Write("Congratulations! ");
+                }
+                else if (result == 0)
+                {
+                    Console.Write("Too bad! ");
+                }
+
+                int handValue = inputHands[i].PlayerHand[0].Value + inputHands[i].PlayerHand[0].Value;
+
+            }
+
+            Console.WriteLine();
         }
     }
 }

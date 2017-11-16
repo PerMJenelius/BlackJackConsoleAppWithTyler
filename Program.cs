@@ -62,6 +62,10 @@ namespace BlackJackConsoleAppWithTyler
 
         private static void EndGame()
         {
+            Print.Info(hands, players[0]);
+            var color = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.White;
+
             for (int i = 0; i < hands.Count; i++)
             {
                 double result = Game.CompareHands(hands[i]);
@@ -71,10 +75,6 @@ namespace BlackJackConsoleAppWithTyler
 
                 players[0].Hands.Add(hands[i]);
                 Player.SaveData(players[0]);
-
-                Print.Info(hands, players[0]);
-                var color = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.Red;
 
                 if (hands.Count > 1)
                 {
@@ -103,14 +103,13 @@ namespace BlackJackConsoleAppWithTyler
                             break;
                         }
                 }
-                Console.ForegroundColor = color;
 
                 if (hands.Count > 1)
                 {
                     Console.ReadKey();
                 }
             }
-
+            Console.ForegroundColor = color;
             active = false;
         }
 
@@ -182,7 +181,7 @@ namespace BlackJackConsoleAppWithTyler
                                 case "h": hands[i].PlayerHand = Game.DealCard(hands[i].PlayerHand, 1); break;
                                 case "s": hands[i].Stand = true; break;
                                 case "d": hands[i] = Game.Double(hands[i]); players[0].Bankroll -= hands[i].Bet; break;
-                                case "p": Game.Split(hands[i]); players[0].Bankroll -= hands[1].Bet; break;
+                                case "p": hands = Game.Split(hands[i]); players[0].Bankroll -= hands[i].Bet; break;
                                 case "i": hands[i] = Game.Insurance(hands[i]); players[0].Bankroll -= hands[i].Insurance; break;
                                 default: hands[i].Stand = true; break;
                             }
@@ -193,18 +192,12 @@ namespace BlackJackConsoleAppWithTyler
                     } while (!hands[i].Stand && hands.Count == count);
                 }
 
-                if (Game.CheckForLose(hands))
-                {
-                    Tyler.AskForAction(hands);
-                    EndGame();
-                    Tyler.Result();
-                }
-                if (active && Game.CheckForStand(hands))
+                if (Game.CheckForLose(hands) || Game.CheckForStand(hands))
                 {
                     Tyler.AskForAction(hands);
                     hands = Game.DealerRound(hands, players[0]);
                     EndGame();
-                    Tyler.Result();
+                    Tyler.EndGame(hands);
                 }
 
             } while (active);
