@@ -49,36 +49,36 @@ namespace ConsoleAppBlackJack
 
                 if (pair)
                 {
-                    int tylerPair = tylersHands[i].PlayerHand[0].Value;
-                    Pair(tylerPair, dealerCard, count);
-                    break;
+                    Pair(tylersHands[i], dealerCard, count);
                 }
                 else if (soft)
                 {
-                    int tylerHand = tylersHands[i].PlayerHandSoftValue;
-                    Soft(tylerHand, dealerCard, count);
-                    break;
+                    Soft(tylersHands[i], dealerCard, count);
                 }
                 else
                 {
-                    int tylerHand = tylersHands[i].PlayerHandValue;
-                    Solid(tylerHand, dealerCard, count);
-                    break;
+                    Solid(tylersHands[i], dealerCard, count);
                 }
+
+                Game.EvaluateHands(tylersHands);
             }
+
+            Console.ReadKey();
         }
 
-        private static void Solid(int tylerHand, int dealerCard, int count)
+        private static void Solid(Hand inputHand, int dealerCard, int count)
         {
+            int tylerHand = inputHand.PlayerHandValue;
+
             if (tylerHand <= 7)
             {
-                Hit();
+                Hit(inputHand);
             }
             else if (tylerHand == 8)
             {
                 if (dealerCard <= 4)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 else if (dealerCard >= 5 && dealerCard <= 6)
                 {
@@ -86,7 +86,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerHand == 9)
@@ -97,7 +97,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerHand >= 10 && tylerHand <= 11)
@@ -113,7 +113,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 10)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerHand == 12)
@@ -131,16 +131,16 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 else if (dealerCard == 5 && count <= -1)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 //CountCards
                 else if (dealerCard == 6 && count <= -5)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 else if (dealerCard >= 2 && dealerCard <= 3)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 else if (dealerCard >= 4 && dealerCard <= 6)
                 {
@@ -148,7 +148,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerHand >= 13 && tylerHand <= 16)
@@ -156,17 +156,17 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 if (tylerHand == 13 && dealerCard <= 3 && count <= -1)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 //CountCards
                 else if (tylerHand == 13 && dealerCard >= 4 && dealerCard <= 5 && count <= -5)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 //CountCards
                 else if (tylerHand == 14 && dealerCard <= 3 && count <= -5)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 //CountCards
                 else if (tylerHand == 14 && dealerCard == 11 && count >= 10)
@@ -176,7 +176,7 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 else if (tylerHand == 15 && dealerCard == 2 && count <= -5)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 //CountCards
                 else if (tylerHand == 15 && dealerCard == 9 && count >= 10)
@@ -214,7 +214,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerHand >= 17)
@@ -222,7 +222,7 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 if (tylerHand == 17 && dealerCard == 11 && count <= -5)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 else
                 {
@@ -231,13 +231,15 @@ namespace ConsoleAppBlackJack
             }
         }
 
-        private static void Soft(int tylerHand, int dealerCard, int count)
+        private static void Soft(Hand inputHand, int dealerCard, int count)
         {
+            int tylerHand = inputHand.PlayerHandSoftValue;
+
             if (tylerHand >= 13 && tylerHand <= 16)
             {
                 if (dealerCard <= 3)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 else if (dealerCard >= 4 && dealerCard <= 6)
                 {
@@ -245,7 +247,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerHand == 17)
@@ -256,7 +258,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerHand == 18)
@@ -291,8 +293,10 @@ namespace ConsoleAppBlackJack
             }
         }
 
-        private static void Pair(int tylerPair, int dealerCard, int count)
+        private static void Pair(Hand inputHand, int dealerCard, int count)
         {
+            int tylerPair = inputHand.PlayerHand[0].Value;
+
             //CountCards
             if (dealerCard >= 3 && dealerCard <= 4 && count >= 10)
             {
@@ -311,7 +315,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 8)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerPair == 3)
@@ -322,14 +326,14 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 9)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerPair == 4)
             {
                 if (dealerCard <= 3)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 else if (dealerCard >= 4 && dealerCard <= 6)
                 {
@@ -337,7 +341,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 7)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerPair == 5)
@@ -348,7 +352,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 10)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerPair == 6)
@@ -359,7 +363,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 8)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerPair == 7)
@@ -370,7 +374,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard == 9)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
                 else if (dealerCard == 10)
                 {
@@ -378,7 +382,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard == 11)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerPair == 8)
@@ -389,7 +393,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 10)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
             else if (tylerPair == 9)
@@ -406,9 +410,9 @@ namespace ConsoleAppBlackJack
                 {
                     Split();
                 }
-                else if (dealerCard > 9)
+                else if (dealerCard >= 10)
                 {
-
+                    Stand();
                 }
             }
             else if (tylerPair == 10)
@@ -423,7 +427,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard == 11)
                 {
-                    Hit();
+                    inputHand = Hit(inputHand);
                 }
             }
         }
@@ -511,9 +515,11 @@ namespace ConsoleAppBlackJack
             Console.WriteLine("Double or hit");
         }
 
-        private static void Hit()
+        private static Hand Hit(Hand inputHand)
         {
+            inputHand.PlayerHand = Game.DealCard(inputHand.PlayerHand, 1);
             Console.WriteLine("Hit");
+            return inputHand;
         }
 
         private static void Split()
