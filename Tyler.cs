@@ -8,6 +8,7 @@ namespace ConsoleAppBlackJack
     {
         static List<Hand> tylersHands = new List<Hand>();
         static string dataPath = "C:/Projekt/XML/BlackJackConsoleAppWithTyler/tyler.xml";
+        static Player tyler = GetTyler();
 
         public static Player GetTyler()
         {
@@ -31,39 +32,41 @@ namespace ConsoleAppBlackJack
             {
                 allHands.Add(hand);
             }
-            int count = CountCards(allHands);
+            int cardCount = CountCards(allHands);
 
-            Console.WriteLine(count);
+            int count = tylersHands.Count;
 
-            for (int i = 0; i < tylersHands.Count; i++)
+            for (int i = 0; i < count; i++)
             {
-                int dealerCard = tylersHands[i].DealerHand[0].Value == 1 ? 11 : tylersHands[i].DealerHand[0].Value;
-                bool pair = tylersHands[i].PlayerHand.Count == 2 && tylersHands[i].PlayerHand[0].Value == tylersHands[i].PlayerHand[1].Value;
-                bool soft = tylersHands[i].PlayerHandSoftValue > tylersHands[i].PlayerHandValue;
+                do
+                {
+                    int dealerCard = tylersHands[i].DealerHand[0].Value == 1 ? 11 : tylersHands[i].DealerHand[0].Value;
+                    bool pair = tylersHands[i].PlayerHand.Count == 2 && tylersHands[i].PlayerHand[0].Value == tylersHands[i].PlayerHand[1].Value;
+                    bool soft = tylersHands[i].PlayerHandSoftValue > tylersHands[i].PlayerHandValue;
 
-                //CountCards
-                if (dealerCard == 11 && count >= 1)
-                {
-                    tylersHands[i] = Game.Insurance(tylersHands[i]);
-                }
+                    //CountCards
+                    if (dealerCard == 11 && cardCount >= 1)
+                    {
+                        tylersHands[i] = Game.Insurance(tylersHands[i]);
+                    }
 
-                if (pair)
-                {
-                    Pair(tylersHands[i], dealerCard, count);
-                }
-                else if (soft)
-                {
-                    Soft(tylersHands[i], dealerCard, count);
-                }
-                else
-                {
-                    Solid(tylersHands[i], dealerCard, count);
-                }
+                    if (pair)
+                    {
+                        Pair(tylersHands[i], dealerCard, cardCount);
+                    }
+                    else if (soft)
+                    {
+                        Soft(tylersHands[i], dealerCard, cardCount);
+                    }
+                    else
+                    {
+                        Solid(tylersHands[i], dealerCard, cardCount);
+                    }
 
-                Game.EvaluateHands(tylersHands);
+                    Game.EvaluateHands(tylersHands);
+
+                } while (!tylersHands[i].Stand && tylersHands.Count == count);
             }
-
-            Console.ReadKey();
         }
 
         private static void Solid(Hand inputHand, int dealerCard, int count)
@@ -82,7 +85,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 5 && dealerCard <= 6)
                 {
-                    DoubleOrHit();
+                    inputHand = DoubleOrHit(inputHand);
                 }
                 else if (dealerCard >= 7)
                 {
@@ -93,7 +96,7 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard <= 6)
                 {
-                    DoubleOrHit();
+                    inputHand = DoubleOrHit(inputHand);
                 }
                 else if (dealerCard >= 7)
                 {
@@ -105,11 +108,11 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 if (tylerHand == 10 && dealerCard >= 10 && count >= 5)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard <= 9)
                 {
-                    DoubleOrHit();
+                    inputHand = DoubleOrHit(inputHand);
                 }
                 else if (dealerCard >= 10)
                 {
@@ -121,12 +124,12 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 if (dealerCard == 2 && count >= 5)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (dealerCard == 3 && count >= 1)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (dealerCard == 5 && count <= -1)
@@ -144,7 +147,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 4 && dealerCard <= 6)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard >= 7)
                 {
@@ -171,7 +174,7 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 else if (tylerHand == 14 && dealerCard == 11 && count >= 10)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (tylerHand == 15 && dealerCard == 2 && count <= -5)
@@ -181,36 +184,36 @@ namespace ConsoleAppBlackJack
                 //CountCards
                 else if (tylerHand == 15 && dealerCard == 9 && count >= 10)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (tylerHand == 15 && dealerCard >= 10 && count >= 5)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (tylerHand == 16 & dealerCard == 8 && count >= 10)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (tylerHand == 16 && dealerCard == 9 && count >= 5)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (tylerHand == 16 && dealerCard == 10 && count >= 1)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 //CountCards
                 else if (tylerHand == 16 && dealerCard == 11 && count >= 5)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard <= 6)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard >= 7)
                 {
@@ -226,7 +229,7 @@ namespace ConsoleAppBlackJack
                 }
                 else
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
             }
         }
@@ -243,7 +246,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 4 && dealerCard <= 6)
                 {
-                    DoubleOrHit();
+                    inputHand = DoubleOrHit(inputHand);
                 }
                 else if (dealerCard >= 7)
                 {
@@ -254,7 +257,7 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard <= 6)
                 {
-                    DoubleOrHit();
+                    inputHand = DoubleOrHit(inputHand);
                 }
                 else if (dealerCard >= 7)
                 {
@@ -265,31 +268,31 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard == 2)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard >= 3 && dealerCard <= 6)
                 {
-                    DoubleOrStand();
+                    inputHand = DoubleOrStand(inputHand);
                 }
             }
             else if (tylerHand == 19)
             {
                 if (dealerCard <= 5)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard == 6)
                 {
-                    DoubleOrStand();
+                    inputHand = DoubleOrStand(inputHand);
                 }
                 else if (dealerCard >= 7)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
             }
             else if (tylerHand >= 20)
             {
-                Stand();
+                inputHand.Stand = true;
             }
         }
 
@@ -300,18 +303,18 @@ namespace ConsoleAppBlackJack
             //CountCards
             if (dealerCard >= 3 && dealerCard <= 4 && count >= 10)
             {
-                Stand();
+                inputHand.Stand = true;
             }
             //CountCards
             else if (dealerCard >= 5 && dealerCard <= 6 && count >= 5)
             {
-                Stand();
+                inputHand.Stand = true;
             }
             else if (tylerPair == 2)
             {
                 if (dealerCard <= 7)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard >= 8)
                 {
@@ -322,7 +325,7 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard > 1 && dealerCard <= 8)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard >= 9)
                 {
@@ -337,7 +340,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard >= 4 && dealerCard <= 6)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard >= 7)
                 {
@@ -348,7 +351,7 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard <= 9)
                 {
-                    DoubleOrHit();
+                    inputHand = DoubleOrHit(inputHand);
                 }
                 else if (dealerCard >= 10)
                 {
@@ -359,7 +362,7 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard <= 7)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard >= 8)
                 {
@@ -370,7 +373,7 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard <= 8)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard == 9)
                 {
@@ -378,7 +381,7 @@ namespace ConsoleAppBlackJack
                 }
                 else if (dealerCard == 10)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard == 11)
                 {
@@ -389,7 +392,7 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard <= 9)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard >= 10)
                 {
@@ -400,30 +403,30 @@ namespace ConsoleAppBlackJack
             {
                 if (dealerCard <= 6)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard == 7)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
                 else if (dealerCard > 7 && dealerCard <= 9)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard >= 10)
                 {
-                    Stand();
+                    inputHand.Stand = true;
                 }
             }
             else if (tylerPair == 10)
             {
-                Stand();
+                inputHand.Stand = true;
             }
             else if (tylerPair == 1)
             {
                 if (dealerCard <= 10)
                 {
-                    Split();
+                    inputHand = Split(inputHand);
                 }
                 else if (dealerCard == 11)
                 {
@@ -505,31 +508,45 @@ namespace ConsoleAppBlackJack
             Console.WriteLine();
         }
 
-        private static void DoubleOrStand()
+        private static Hand DoubleOrStand(Hand inputHand)
         {
-            Console.WriteLine("Double or stand");
+            if (inputHand.PlayerHand.Count == 2)
+            {
+                inputHand = Game.Double(inputHand);
+            }
+            else
+            {
+                inputHand.Stand = true;
+            }
+
+            return inputHand;
         }
 
-        private static void DoubleOrHit()
+        private static Hand DoubleOrHit(Hand inputHand)
         {
-            Console.WriteLine("Double or hit");
+            if (inputHand.PlayerHand.Count == 2)
+            {
+                inputHand = Game.Double(inputHand);
+            }
+            else
+            {
+                inputHand = Hit(inputHand);
+            }
+
+            return inputHand;
         }
 
         private static Hand Hit(Hand inputHand)
         {
             inputHand.PlayerHand = Game.DealCard(inputHand.PlayerHand, 1);
-            Console.WriteLine("Hit");
             return inputHand;
         }
 
-        private static void Split()
+        private static Hand Split(Hand inputHand)
         {
-            Console.WriteLine("Split");
-        }
-
-        private static void Stand()
-        {
-            Console.WriteLine("Stand");
+            List<Hand> hands = Game.Split(inputHand);
+            tyler.Bankroll -= hands[1].Bet;
+            return inputHand;
         }
 
         public static void AskForBet(Hand inputHand)
@@ -542,6 +559,57 @@ namespace ConsoleAppBlackJack
             tylersHand.Bet = 5;
             tylersHands.Add(tylersHand);
             Game.EvaluateHands(tylersHands);
+        }
+
+        public static string Says(List<Hand> inputHands)
+        {
+            return string.Empty;
+        }
+
+        internal static void Result()
+        {
+            for (int i = 0; i < tylersHands.Count; i++)
+            {
+                double result = Game.CompareHands(tylersHands[i]);
+                tylersHands[i].TransactionAmount = result == 1 ? tylersHands[i].Bet + tylersHands[i].Insurance : result * tylersHands[i].Bet;
+                tyler.Bankroll += tylersHands[i].TransactionAmount;
+
+                tyler.Hands.Add(tylersHands[i]);
+                SaveTyler();
+
+                switch (result)
+                {
+                    case 0: Console.WriteLine("Tyler loses."); break;
+                    case 2: Console.WriteLine("Tyler wins"); break;
+                    case 2.5: Console.WriteLine("Tyler gets a blackjack"); break;
+                    case 1:
+                        {
+                            if (tylersHands[i].Insurance > 0 && tylersHands[0].DealerHand.Count == 2 && tylersHands[0].DealerHandSoftValue == 21)
+                            {
+                                Console.WriteLine("Tyler's insurance pays out.");
+                            }
+                            else if (tylersHands[i].Insurance > 0 && tylersHands[i].PlayerHand.Count == 2 && tylersHands[i].PlayerHandSoftValue == 21)
+                            {
+                                Console.WriteLine("Tyler's insurance pays out.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Tyler gets a draw!");
+                            };
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static void SaveTyler()
+        {
+            List<Player> tylerList = new List<Player>
+            {
+                tyler
+            };
+            string xmlData = XMLConvert.ObjectToXml(tylerList);
+            File.WriteAllText(dataPath, xmlData);
         }
     }
 }

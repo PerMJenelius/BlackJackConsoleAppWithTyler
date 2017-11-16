@@ -182,7 +182,7 @@ namespace BlackJackConsoleAppWithTyler
                                 case "h": hands[i].PlayerHand = Game.DealCard(hands[i].PlayerHand, 1); break;
                                 case "s": hands[i].Stand = true; break;
                                 case "d": hands[i] = Game.Double(hands[i]); players[0].Bankroll -= hands[i].Bet; break;
-                                case "p": Game.Split(hands, players[0]); players[0].Bankroll -= hands[1].Bet; break;
+                                case "p": Game.Split(hands[i]); players[0].Bankroll -= hands[1].Bet; break;
                                 case "i": hands[i] = Game.Insurance(hands[i]); players[0].Bankroll -= hands[i].Insurance; break;
                                 default: hands[i].Stand = true; break;
                             }
@@ -197,12 +197,14 @@ namespace BlackJackConsoleAppWithTyler
                 {
                     Tyler.AskForAction(hands);
                     EndGame();
+                    Tyler.Result();
                 }
                 if (active && Game.CheckForStand(hands))
                 {
                     Tyler.AskForAction(hands);
                     hands = Game.DealerRound(hands, players[0]);
                     EndGame();
+                    Tyler.Result();
                 }
 
             } while (active);

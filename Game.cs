@@ -132,25 +132,27 @@ namespace ConsoleAppBlackJack
             return !inputHand.Split && inputHand.PlayerHand.Count == 2 && inputHand.PlayerHand[0].Value == inputHand.PlayerHand[1].Value;
         }
 
-        public static List<Hand> Split(List<Hand> hands, Player player)
+        public static List<Hand> Split(Hand inputHand)
         {
-            if (MaySplit(hands[0]))
+            List<Hand> hands = new List<Hand>
             {
-                Hand hand = new Hand();
-                hand.PlayerHand.Add(hands[0].PlayerHand[1]);
-                hands[0].PlayerHand.Remove(hands[0].PlayerHand[1]);
-                hand.Bet = hands[0].Bet;
+                inputHand
+            };
 
-                hands.Add(hand);
+            if (MaySplit(inputHand))
+            {
+                Hand newHand = new Hand();
+                newHand.PlayerHand.Add(inputHand.PlayerHand[1]);
+                inputHand.PlayerHand.Remove(inputHand.PlayerHand[1]);
+                newHand.Bet = inputHand.Bet;
 
-                hands[0].Split = true;
-                hands[1].Split = true;
-
-                hands[0].PlayerHand = DealCard(hands[0].PlayerHand, 1);
-                hands[1].PlayerHand = DealCard(hands[1].PlayerHand, 1);
-
+                hands.Add(newHand);
+                
                 for (int i = 0; i < hands.Count; i++)
                 {
+                    hands[i].Split = true;
+                    hands[i].PlayerHand = DealCard(hands[i].PlayerHand, 1);
+
                     if (hands[i].PlayerHand[0].Rank == Rank.Ace)
                     {
                         hands[i].Stand = true;
