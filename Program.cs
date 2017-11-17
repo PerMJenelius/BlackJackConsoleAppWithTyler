@@ -68,9 +68,9 @@ namespace BlackJackConsoleAppWithTyler
 
             for (int i = 0; i < hands.Count; i++)
             {
-                double result = Game.CompareHands(hands[i]);
+                hands[i].Result = Game.CompareHands(hands[i]);
 
-                hands[i].TransactionAmount = result == 1 ? hands[i].Bet + hands[i].Insurance : result * hands[i].Bet;
+                hands[i].TransactionAmount = hands[i].Result == 1 ? hands[i].Bet + hands[i].Insurance : hands[i].Result * hands[i].Bet;
                 players[0].Bankroll += hands[i].TransactionAmount;
 
                 players[0].Hands.Add(hands[i]);
@@ -81,7 +81,7 @@ namespace BlackJackConsoleAppWithTyler
                     Console.Write($"Hand {i + 1}: ");
                 }
 
-                switch (result)
+                switch (hands[i].Result)
                 {
                     case 0: Console.WriteLine("You lose."); break;
                     case 2: Console.WriteLine("You win!"); break;

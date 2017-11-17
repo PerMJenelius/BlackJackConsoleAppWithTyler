@@ -618,18 +618,18 @@ namespace ConsoleAppBlackJack
 
             for (int i = 0; i < tylersHands.Count; i++)
             {
-                double result = Game.CompareHands(tylersHands[i]);
-                tylersHands[i].TransactionAmount = result == 1 ? tylersHands[i].Bet + tylersHands[i].Insurance : result * tylersHands[i].Bet;
+                inputHands[i].Result = Game.CompareHands(tylersHands[i]);
+                tylersHands[i].TransactionAmount = inputHands[i].Result == 1 ? tylersHands[i].Bet + tylersHands[i].Insurance : inputHands[i].Result * tylersHands[i].Bet;
                 tyler.Bankroll += tylersHands[i].TransactionAmount;
 
                 tyler.Hands.Add(tylersHands[i]);
                 SaveTyler();
 
-                switch (result)
+                switch (inputHands[i].Result)
                 {
                     case 0: Console.WriteLine("Tyler loses."); break;
-                    case 2: Console.WriteLine("Tyler wins"); break;
-                    case 2.5: Console.WriteLine("Tyler gets a blackjack"); break;
+                    case 2: Console.WriteLine("Tyler wins."); break;
+                    case 2.5: Console.WriteLine("Tyler gets a blackjack."); break;
                     case 1:
                         {
                             if (tylersHands[i].Insurance > 0 && tylersHands[0].DealerHand.Count == 2 && tylersHands[0].DealerHandSoftValue == 21)
@@ -642,7 +642,7 @@ namespace ConsoleAppBlackJack
                             }
                             else
                             {
-                                Console.WriteLine("Tyler gets a draw!");
+                                Console.WriteLine("Tyler gets a draw.");
                             };
                             break;
                         }
@@ -678,13 +678,11 @@ namespace ConsoleAppBlackJack
             {
                 Console.Write("Tyler says: ");
 
-                var result = Game.CompareHands(inputHands[i]);
-
-                if (result >= 2)
+                if (inputHands[i].Result >= 2)
                 {
                     Console.Write("Congratulations! ");
                 }
-                else if (result <= 1)
+                else if (inputHands[i].Result <= 1)
                 {
                     Console.Write("Too bad! ");
                 }

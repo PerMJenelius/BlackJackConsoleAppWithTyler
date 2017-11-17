@@ -179,6 +179,7 @@ namespace ConsoleAppBlackJack
             {
                 inputHand.Bet += inputHand.Bet;
                 inputHand.PlayerHand = DealCard(inputHand.PlayerHand, 1);
+                inputHand.Double = true;
                 inputHand.Stand = true;
             }
             return inputHand;
