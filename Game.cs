@@ -85,6 +85,16 @@ namespace ConsoleAppBlackJack
             return hands;
         }
 
+        public static Hand EvaluateHands(Hand hand)
+        {
+            hand.PlayerHandValue = CalculateHandValue(hand.PlayerHand);
+            hand.DealerHandValue = CalculateHandValue(hand.DealerHand);
+            hand.PlayerHandSoftValue = hand.PlayerHandValue + CountAces(hand.PlayerHand);
+            hand.DealerHandSoftValue = hand.DealerHandValue + CountAces(hand.DealerHand);
+
+            return hand;
+        }
+
         public static int CalculateHandValue(List<Card> inputHand)
         {
             int sum = 0;
@@ -147,7 +157,7 @@ namespace ConsoleAppBlackJack
                 newHand.Bet = inputHand.Bet;
 
                 hands.Add(newHand);
-                
+
                 for (int i = 0; i < hands.Count; i++)
                 {
                     hands[i].Split = true;
@@ -202,7 +212,7 @@ namespace ConsoleAppBlackJack
         {
             var tylerHands = Tyler.GetTylersHands();
 
-            if (!CheckForLose(tylerHands))
+            if (!CheckForLose(hands) && !CheckForLose(tylerHands))
             {
                 do
                 {

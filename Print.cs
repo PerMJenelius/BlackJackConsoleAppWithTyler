@@ -60,7 +60,7 @@ namespace ConsoleAppBlackJack
 
             ConsoleColor color = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Bet: ${bet.ToString("0.00")}");
+            Console.WriteLine($"Bet: ${bet}");
             Console.ForegroundColor = color;
             Console.WriteLine();
         }
@@ -71,7 +71,7 @@ namespace ConsoleAppBlackJack
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write($"Player: {player.Name}  ");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Bankroll: ${ player.Bankroll}");
+            Console.WriteLine($"Bankroll: ${player.Bankroll.ToString("0.00")}");
             Console.ForegroundColor = color;
         }
 
