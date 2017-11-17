@@ -23,7 +23,7 @@ namespace ConsoleAppBlackJack
             return tylersHands;
         }
 
-        public static void AskForAction(List<Hand> inputHands)
+        public static List<Hand> AskForAction(List<Hand> inputHands)
         {
             tylersHands[0].DealerHand = inputHands[0].DealerHand;
             Game.EvaluateHands(tylersHands);
@@ -38,11 +38,11 @@ namespace ConsoleAppBlackJack
                 allHands.Add(hand);
             }
 
-            do
-            {
-                int count = tylersHands.Count;
+            int count = tylersHands.Count;
 
-                for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
+            {
+                do
                 {
                     int action = ChooseAction(tylersHands[i], allHands);
 
@@ -56,9 +56,13 @@ namespace ConsoleAppBlackJack
                         case 6: tylersHands[i] = Game.Insurance(tylersHands[i]); break;
                         default: tylersHands[i].Stand = true; break;
                     }
+
                     Game.EvaluateHands(tylersHands);
-                }
-            } while (!Game.CheckForStand(tylersHands) && !Game.CheckForLose(tylersHands));
+
+                } while (!tylersHands[i].Stand);
+            }
+
+            return tylersHands;
         }
 
         private static int ChooseAction(Hand inputHand, List<Hand> allHands)
@@ -66,33 +70,28 @@ namespace ConsoleAppBlackJack
             int cardCount = CountCards(allHands);
             int action = 0;
 
-            do
+            int dealerCard = inputHand.DealerHand[0].Value == 1 ? 11 : inputHand.DealerHand[0].Value;
+            bool pair = inputHand.PlayerHand.Count == 2 && inputHand.PlayerHand[0].Value == inputHand.PlayerHand[1].Value;
+            bool soft = inputHand.PlayerHandSoftValue > inputHand.PlayerHandValue;
+
+            //CountCards
+            if (dealerCard == 11 && cardCount >= 1)
             {
-                int dealerCard = inputHand.DealerHand[0].Value == 1 ? 11 : inputHand.DealerHand[0].Value;
-                bool pair = inputHand.PlayerHand.Count == 2 && inputHand.PlayerHand[0].Value == inputHand.PlayerHand[1].Value;
-                bool soft = inputHand.PlayerHandSoftValue > inputHand.PlayerHandValue;
+                inputHand = Insurance(inputHand);
+            }
 
-                //CountCards
-                if (dealerCard == 11 && cardCount >= 1)
-                {
-                    inputHand = Insurance(inputHand);
-                }
-
-                if (pair)
-                {
-                    action = Pair(inputHand, dealerCard, cardCount);
-                }
-                else if (soft)
-                {
-                    Soft(inputHand, dealerCard, cardCount);
-                }
-                else
-                {
-                    Solid(inputHand, dealerCard, cardCount);
-                }
-
-                inputHand = Game.EvaluateHands(inputHand);
-            } while (!inputHand.Stand);
+            if (pair)
+            {
+                action = Pair(inputHand, dealerCard, cardCount);
+            }
+            else if (soft)
+            {
+                action = Soft(inputHand, dealerCard, cardCount);
+            }
+            else
+            {
+                action = Solid(inputHand, dealerCard, cardCount);
+            }
 
             return action;
         }
@@ -503,7 +502,7 @@ namespace ConsoleAppBlackJack
                 {
                     --count;
                 }
-                if (card.Value > 1 && card.Value <= 6)
+                if (card.Value >= 2 && card.Value <= 6)
                 {
                     ++count;
                 }

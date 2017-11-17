@@ -208,11 +208,9 @@ namespace ConsoleAppBlackJack
             return stand == hands.Count;
         }
 
-        public static List<Hand> DealerRound(List<Hand> hands, Player player)
+        public static List<Hand> DealerRound(List<Hand> hands, List<Hand> tylersHands, Player player)
         {
-            var tylerHands = Tyler.GetTylersHands();
-
-            if (!CheckForLose(hands) && !CheckForLose(tylerHands))
+            if (!CheckForLose(hands) || !CheckForLose(tylersHands))
             {
                 do
                 {

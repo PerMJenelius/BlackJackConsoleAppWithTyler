@@ -194,8 +194,8 @@ namespace BlackJackConsoleAppWithTyler
 
                 if (Game.CheckForLose(hands) || Game.CheckForStand(hands))
                 {
-                    Tyler.AskForAction(hands);
-                    hands = Game.DealerRound(hands, players[0]);
+                    List<Hand> tylersHands = Tyler.AskForAction(hands);
+                    hands = Game.DealerRound(hands, tylersHands, players[0]);
                     EndGame();
                     Tyler.EndGame(hands);
                 }
