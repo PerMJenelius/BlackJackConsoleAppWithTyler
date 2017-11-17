@@ -73,7 +73,7 @@ namespace BlackJackConsoleAppWithTyler
                 hands[i].TransactionAmount = hands[i].Result == 1 ? hands[i].Bet + hands[i].Insurance : hands[i].Result * hands[i].Bet;
                 players[0].Bankroll += hands[i].TransactionAmount;
 
-                players[0].Hands.Add(hands[i]);
+                players[0].Hands.Add(new ShortHand(hands[i]));
                 Player.SaveData(players[0]);
 
                 if (hands.Count > 1)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BlackJackConsoleAppWithTyler;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace ConsoleAppBlackJack
         public string Name { get; set; }
         public double Bankroll { get; set; }
         public bool IsActive { get; set; }
-        public List<Hand> Hands { get; set; }
+        public List<ShortHand> Hands { get; set; }
 
         public Player(int id, string name)
         {
@@ -18,7 +19,7 @@ namespace ConsoleAppBlackJack
             Name = name;
             Bankroll = 10000;
             IsActive = true;
-            Hands = new List<Hand>();
+            Hands = new List<ShortHand>();
         }
 
         private Player()

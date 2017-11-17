@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlackJackConsoleAppWithTyler;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -618,14 +619,14 @@ namespace ConsoleAppBlackJack
 
             for (int i = 0; i < tylersHands.Count; i++)
             {
-                inputHands[i].Result = Game.CompareHands(tylersHands[i]);
-                tylersHands[i].TransactionAmount = inputHands[i].Result == 1 ? tylersHands[i].Bet + tylersHands[i].Insurance : inputHands[i].Result * tylersHands[i].Bet;
+                tylersHands[i].Result = Game.CompareHands(tylersHands[i]);
+                tylersHands[i].TransactionAmount = tylersHands[i].Result == 1 ? tylersHands[i].Bet + tylersHands[i].Insurance : tylersHands[i].Result * tylersHands[i].Bet;
                 tyler.Bankroll += tylersHands[i].TransactionAmount;
 
-                tyler.Hands.Add(tylersHands[i]);
+                tyler.Hands.Add(new ShortHand(tylersHands[i]));
                 SaveTyler();
 
-                switch (inputHands[i].Result)
+                switch (tylersHands[i].Result)
                 {
                     case 0: Console.WriteLine("Tyler loses."); break;
                     case 2: Console.WriteLine("Tyler wins."); break;

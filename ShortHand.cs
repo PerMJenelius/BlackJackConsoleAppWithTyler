@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BlackJackConsoleAppWithTyler
 {
-    class ShortHand
+    public class ShortHand
     {
         public DateTime TimeStamp { get; set; }
         public List<string> DealerHand { get; set; }
@@ -20,10 +20,13 @@ namespace BlackJackConsoleAppWithTyler
         {
             TimeStamp = inputHand.TimeStamp;
 
+            DealerHand = new List<string>();
             foreach (var card in inputHand.DealerHand)
             {
                 DealerHand.Add($"{card.Rank} of {card.Suit} ({card.Value})");
             }
+
+            PlayerHand = new List<string>();
             foreach (var card in inputHand.PlayerHand)
             {
                 PlayerHand.Add($"{card.Rank} of {card.Suit} ({card.Value})");
